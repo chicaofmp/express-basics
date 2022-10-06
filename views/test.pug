@@ -1,0 +1,13 @@
+extends layout.pug
+
+block content
+    section#test 
+        h1 Let's Test rendering values!
+        .games 
+            ul 
+                each game in games 
+                    li= game
+        .colors 
+            ul 
+                each color in colors 
+                    li= color

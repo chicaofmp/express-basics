@@ -1,0 +1,12 @@
+extends layout.pug 
+
+block content 
+    h1 HI!
+    h3 Working with Routes!
+    if name
+        h2 welcome, #{name}!
+    else
+        form(action='/presentation', method='post')
+            label Enter your name: 
+                input(type='text', name='username')
+            button(type='submit') SUBMIT
