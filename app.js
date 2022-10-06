@@ -1,11 +1,12 @@
 const express = require('express');
 
-const bodyParser = require('body-parser')
-
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 const colors = ['red', 'orange', 'black', 'blue', 'green', 'white'];
@@ -15,7 +16,15 @@ const games = ['Counter-Strike', 'warcraft 3', 'starcraft', 'Call of Duty', 'Meg
 app.set('view engine', 'pug')
 
 app.get('/', (req, res) => {
-    res.render('index')
+    const name = req.cookies.username
+    
+    if(name) {
+        res.render('index', { name: name })
+    } else {
+        res.redirect('/welcome')
+    }
+
+    
 })
 
 app.get('/hello', (req, res) => {
@@ -50,11 +59,19 @@ app.post('/presentation', (req, res) => {
 })
 
 app.get('/welcome', (req, res) => {
-   res.render('welcome') ;
+    const name = req.cookies.username;
+
+    if(name) {
+        res.redirect('/')
+    } else {
+        res.render('welcome')
+    }
 });
 
 app.post('/welcome', (req, res) => {
-    res.render('welcome', {name: req.body.username} )
+
+    res.cookie('username', req.body.username)
+    res.redirect('/')
 })
 
 app.listen(3000, () => {
